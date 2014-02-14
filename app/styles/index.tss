@@ -1,0 +1,114 @@
+"#mainWindow": {
+  backgroundColor: '#fff'
+},
+
+"#webview[platform=ios]": {
+  top: '20dp',
+  bottom: '40dp'
+},
+
+"#webview[platform=android]": {
+  top: 0,
+  bottom: '40dp'
+},
+
+"#statusView": {
+  bottom: 0,
+  height: '40dp',
+  backgroundColor: '#EEE',
+  borderColor:'#A1A1A1',
+  borderWidth:1,
+},
+
+"#statusViewActivityIndicator[platform=ios]": {
+  top: '10dp',
+  textAlign: 'center',
+  color: '#A1A1A1',
+  font: { 
+    fontSize: '11dp'
+  },
+  shadowColor: '#FEFEFE',
+  shadowOffset: {
+    x:1, 
+    y:1
+  },
+  style: Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+},
+
+"#statusViewActivityIndicator[platform=android]": {
+  top: '10dp',
+  textAlign: 'center',
+  color: '#A1A1A1',
+  font: { 
+    fontSize: '11dp'
+  },
+  shadowColor: '#FEFEFE',
+  shadowOffset: {
+    x:1, 
+    y:1
+  },
+  style: Ti.UI.ActivityIndicatorStyle.DARK
+},
+
+"#statusViewLoadTimeLabel": {
+  top: '10dp',
+  textAlign: 'center',
+  color: '#A1A1A1',
+  font: { 
+    fontSize: '14dp'
+  },
+  shadowColor: '#FEFEFE',
+  shadowOffset: {
+    x:1, 
+    y:1
+  }
+},
+
+"#statusViewBackLabel": {
+  top: '10dp',
+  left: '10dp',
+  color: '#A1A1A1',
+  font: { 
+    fontSize: '14dp',
+    fontWeight: 'bold'
+  },
+  shadowColor: '#FEFEFE',
+  shadowOffset: {
+    x:1, 
+    y:1
+  }
+},
+
+"#statusViewForwardLabel": {
+  top: '10dp',
+  left: '70dp',
+  color: '#A1A1A1',
+  font: { 
+    fontSize: '14dp',
+    fontWeight: 'bold'
+  },
+  shadowColor: '#FEFEFE',
+  shadowOffset: {
+    x:1, 
+    y:1
+  }
+},
+
+"#statusViewShadowGraphLabel": {
+  top: '10dp',
+  right: '5dp',
+  color: '#2192E3',
+  font: { 
+    fontSize: '14dp',
+    fontWeight: 'bold'
+  },
+  shadowColor: '#FEFEFE',
+  shadowOffset: {
+    x:1, 
+    y:1
+  }
+},
+
+"#webview": {
+  top:'40dp'
+}

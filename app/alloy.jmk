@@ -1,0 +1,97 @@
+task("pre:compile", function(event,logger) {
+  var wrench = require("wrench"),
+      fs = require("fs"),
+      jade = require("jade"),
+      view_root = event.dir.views,
+      path = require("path"),
+      coffee = require("coffee-script");
+ 
+  event.alloyConfig.xml = [];
+  event.alloyConfig.coffee = { home: [], resources: [] };
+ 
+  // compile jade in app/views directory
+  wrench.readdirSyncRecursive(view_root).forEach(function(view) {
+    if (view.match(/.jade$/) && !path.basename(view).match(/^_/)) {
+      event.alloyConfig.xml.push(view.replace(/\.jade$/, ".xml"));
+      options = {
+        filename: path.join(view_root,view)
+      };
+      fs.writeFileSync(
+        path.join(view_root,view.replace(/\.jade$/, ".xml")),
+        jade.compile(fs.readFileSync(path.join(view_root,view)).toString(),options)(event));
+    } 
+  });
+ 
+  // compile coffeescript in app directory
+  wrench.readdirSyncRecursive(event.dir.home).forEach(function(target){
+    if (target.match(/\.coffee$/)) {
+      event.alloyConfig.coffee.home.push(target.replace(/\.coffee$/, ".js"));
+      fs.writeFileSync(
+        path.join(event.dir.home,target.replace(/\.coffee$/, ".js")),
+        coffee.compile(fs.readFileSync(path.join(event.dir.home + "/" + target)).toString(), { bare: true }));
+    }
+  });
+ 
+  // compile coffeescript in Resources directory
+  wrench.readdirSyncRecursive(event.dir.resources).forEach(function(target){
+    if (target.match(/\.coffee$/)) {
+      event.alloyConfig.coffee.resources.push(target);
+      fs.writeFileSync(
+        path.join(event.dir.resources,target.replace(/\.coffee$/, ".js")),
+        coffee.compile(fs.readFileSync(path.join(event.dir.resources + "/" + target)).toString(), { bare: true }));
+    }
+  });
+ 
+  // compile coffeescript in spec_coffee directory
+  var specCoffeeDir = event.dir.project + "/spec_coffee";
+  var specDir = event.dir.project + "/spec";
+  wrench.mkdirSyncRecursive(specDir, 0755);
+  var rmdirRecursive = function(dirPath) { // cleanup directory
+    fs.readdirSync(dirPath).forEach(function(target){
+      var targetPath = path.join(dirPath, target);
+      if (fs.statSync(targetPath).isDirectory()) {
+        rmdirRecursive(targetPath);
+        fs.rmdirSync(targetPath);
+      } else {
+        fs.unlinkSync(targetPath);
+      }
+    });
+  };
+  rmdirRecursive(specDir);
+  wrench.readdirSyncRecursive(specCoffeeDir).forEach(function(target){
+    var targetPath = path.join(specCoffeeDir,target);
+    if (fs.statSync(targetPath).isFile()) {
+      var dir = path.dirname(path.join(specDir,target));
+      var out_file, out_data;
+      if (!fs.existsSync(dir)) {
+        wrench.mkdirSyncRecursive(dir, 0755);
+      }
+      if (target.match(/\.coffee$/)) {
+        out_file = path.join(specDir,target.replace(/\.coffee$/, ".js"));
+        out_data = coffee.compile(fs.readFileSync(path.join(specCoffeeDir + "/" + target)).toString(), { bare: true });
+      } else {
+        out_file = path.join(specDir,target);
+        out_data = fs.readFileSync(path.join(specCoffeeDir + "/" + target));
+      }
+      fs.writeFileSync(out_file, out_data);
+    }
+  });
+});
+ 
+task("post:compile",function(event,logger){
+  var fs = require("fs"),
+      view_root = event.dir.views,
+      path = require("path");
+ 
+  event.alloyConfig.xml.forEach(function(view){
+    if (!view.match(/index.xml/g)) {
+      fs.unlinkSync(path.join(view_root, view));
+    }
+  });
+  event.alloyConfig.coffee.home.forEach(function(target){
+    fs.unlinkSync(event.dir.home + "/" + target);
+  });  
+  event.alloyConfig.coffee.resources.forEach(function(target){
+    fs.unlinkSync(event.dir.resources + "/" + target);
+  });
+});

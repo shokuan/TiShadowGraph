@@ -1,0 +1,10 @@
+Alloy
+  Window#mainWindow(title='status')
+    WebView#webview(url="http://www.google.com")
+    View#statusView
+      Label#statusViewShadowGraphLabel(onClick='shadowGraphLabel') ShadowGraph
+      ActivityIndicator#statusViewActivityIndicator
+      Label#statusViewLoadTimeLabel
+      Label#statusViewBackLabel(onClick='webviewBackPage') back
+      Label#statusViewForwardLabel(onClick='webviewForwardPage') fowd
+

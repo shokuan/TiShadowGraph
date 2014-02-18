@@ -63,3 +63,6 @@ Send Codeボタンを押せば、接続された全てのスマートフォン�
 ### どうして作ったの? ###
 スマートフォンのウェブブラウザでの開発、デバッグ効率を上げるためです。  
 慣れていないスマートフォンの操作は、URLを打つことも辛いことがあります。  
+
+### 複数同時に寿司を見る(youtubeに飛びます) ###
+[![TiShadowGraph](http://img.youtube.com/vi/5hWQs1m_bDg/0.jpg)](http://www.youtube.com/watch?v=5hWQs1m_bDg)
